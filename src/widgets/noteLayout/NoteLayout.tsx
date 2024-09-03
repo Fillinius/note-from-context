@@ -38,7 +38,7 @@ const notes = [
 ]
 const ID = '11'
 const noteById = notes.find((note) => note.id === ID)
-console.log(noteById)
+// console.log(noteById)
 
 //mock data
 
@@ -48,7 +48,7 @@ export const NoteLayout = () => {
       <Grid container spacing={2}>
         <Grid size={4}>
           <Item>
-            <NoteList notes={notes} />
+            <NoteList />
           </Item>
         </Grid>
         <Grid size={8}>

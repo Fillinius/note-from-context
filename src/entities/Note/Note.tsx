@@ -10,7 +10,7 @@ import { NoteProp } from '../../shared/notes/NoteList'
 
 export const Note = ({ note }: { note: NoteProp }) => {
   if (!note) return 'Вы еще не создали заметку'
-  console.log(note)
+  // console.log(note)
 
   return (
     <Card sx={{ maxWidth: 345 }}>
