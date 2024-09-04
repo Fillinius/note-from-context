@@ -11,6 +11,7 @@ import { Outlet } from 'react-router-dom'
 
 import { NavLink } from 'react-router-dom'
 import { useNote } from '../../shared/context/notes/useNotes'
+import { useSearch } from '../context/search/useSearch'
 
 //MUI
 const Item = styled(Paper)(({ theme }) => ({
@@ -34,6 +35,12 @@ export type NoteProp = {
 
 export const NoteList = () => {
   const { notes, isLoading } = useNote()
+  const { search } = useSearch()
+
+  const searchNote = notes.filter((note) =>
+    note.title.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+  )
+
   return (
     <>
       <h2>Список заметок</h2>
@@ -47,19 +54,21 @@ export const NoteList = () => {
               <List>
                 {notes &&
                   !isLoading &&
-                  notes.map((note) => (
-                    <NavLink to={`/notes/${note.id}`} key={note.id}>
-                      <ListItem>
-                        <ListItemText>
-                          <h2>{note.title}</h2>
-                          <div>
-                            <span>{note.date}</span>
-                            <p>{note.discription}</p>
-                          </div>
-                        </ListItemText>
-                      </ListItem>
-                    </NavLink>
-                  ))}
+                  (searchNote.length === 0
+                    ? 'Нет совпадений'
+                    : searchNote.map((note) => (
+                        <NavLink to={`/notes/${note.id}`} key={note.id}>
+                          <ListItem>
+                            <ListItemText>
+                              <h2>{note.title}</h2>
+                              <div>
+                                <span>{note.date}</span>
+                                <p>{note.discription}</p>
+                              </div>
+                            </ListItemText>
+                          </ListItem>
+                        </NavLink>
+                      )))}
               </List>
             </Item>
           </Grid>

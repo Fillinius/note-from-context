@@ -16,7 +16,7 @@ export const Note = () => {
   const note = useNote()
   const getNoteById: NoteProp = note.getNoteById(id)
 
-  if (!getNoteById) return 'Вы еще не создали заметку'
+  if (!getNoteById) return 'Вы еще не выбрали заметку'
   // if (getNoteById) return 'Выберите заметку'
 
   return (

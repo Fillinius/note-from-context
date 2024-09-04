@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 import { styled, alpha } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -21,6 +20,7 @@ import {
 } from '@mui/material'
 // MUI
 import { NavLink } from 'react-router-dom'
+import { useSearch } from '../../shared/context/search/useSearch'
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
@@ -88,6 +88,9 @@ export const NavBar = () => {
     setAnchorElUser(null)
   }
   //MUI
+
+  const { search, handleChangeSearch } = useSearch()
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -148,9 +151,6 @@ export const NavBar = () => {
                   <ListItemText>
                     <NavLink to="/about"> About </NavLink>
                   </ListItemText>
-                  {/* <ListItemText>
-                      <NavLink to="/paint"> Paint </NavLink>
-                    </ListItemText> */}
                 </List>
               </MenuItem>
             </Menu>
@@ -223,6 +223,8 @@ export const NavBar = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              value={search}
+              onChange={handleChangeSearch}
             />
           </Search>
         </Toolbar>
