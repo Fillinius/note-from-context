@@ -2,7 +2,13 @@ import axios from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { NoteProp } from '../../notes/NoteList'
 
-const NoteContext = createContext(null)
+const NoteContext = createContext({
+  notes: [{ id: '', title: '', discription: '', date: '' }],
+  createNote: () => [],
+  removeNote: () => [],
+  getNoteById: () => {},
+  isLoading: false,
+})
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useNote = () => {
@@ -39,9 +45,14 @@ export const NoteProvider = ({ children }) => {
   }
 
   async function removeNote(id: string) {
-    await axios.delete(
-      `https://note-fa692-default-rtdb.europe-west1.firebasedatabase.app/notes${id}.json`
-    )
+    try {
+      await axios.delete(
+        `https://note-fa692-default-rtdb.europe-west1.firebasedatabase.app/notes/${id}.json`
+      )
+      setLoading(false)
+    } catch (error) {
+      console.log(error.message)
+    }
   }
   async function fetchNote() {
     try {
@@ -59,8 +70,14 @@ export const NoteProvider = ({ children }) => {
     }
   }
 
+  function getNoteById(id: string) {
+    return notes.find((note) => note.id === id)
+  }
+
   return (
-    <NoteContext.Provider value={{ notes, createNote, removeNote, isLoading }}>
+    <NoteContext.Provider
+      value={{ notes, createNote, removeNote, isLoading, getNoteById }}
+    >
       {children}
     </NoteContext.Provider>
   )

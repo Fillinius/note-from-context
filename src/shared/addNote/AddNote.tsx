@@ -32,7 +32,7 @@ export const AddNote = () => {
     if (note == null) return null
     note.createNote(data)
     setData(INITIAL_STATE)
-    navigate('/')
+    navigate('/notes')
   }
 
   return (

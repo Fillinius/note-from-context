@@ -140,7 +140,10 @@ export const NavBar = () => {
               <MenuItem onClick={handleCloseNavMenu}>
                 <List>
                   <ListItemText>
-                    <NavLink to="/"> Notes </NavLink>
+                    <NavLink to="/"> Main page </NavLink>
+                  </ListItemText>
+                  <ListItemText>
+                    <NavLink to="/notes"> Notes </NavLink>
                   </ListItemText>
                   <ListItemText>
                     <NavLink to="/about"> About </NavLink>
