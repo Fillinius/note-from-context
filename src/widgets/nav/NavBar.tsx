@@ -18,9 +18,15 @@ import {
   List,
   ListItemText,
 } from '@mui/material'
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
+import PersonOffIcon from '@mui/icons-material/PersonOff'
 // MUI
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSearch } from '../../shared/context/search/useSearch'
+import logo from '../../assets/pngwing.png'
+import { useAuth } from '../../shared/context/auth/AuthProvider'
+import { AuthProp } from '../../feature/type/type'
+import { KEYUSER } from '../../feature/registration/LoginForm'
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
@@ -69,27 +75,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export const NavBar = () => {
   // MUI
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  )
+  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  //   null
+  // )
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-  }
+  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElUser(event.currentTarget)
+  // }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null)
+  // }
   //MUI
 
   const { search, handleChangeSearch } = useSearch()
+  const authLocalStorage = localStorage.getItem(KEYUSER)
+  const navigate = useNavigate()
+  const auth: AuthProp | null = useAuth()
+
+  const handleSingOut = () => {
+    if (auth !== null) {
+      auth.signOut(() => {
+        navigate('/signIn')
+      })
+    }
+    return null
+  }
 
   return (
     <AppBar position="static">
@@ -109,10 +127,8 @@ export const NavBar = () => {
               color: 'inherit',
               textDecoration: 'none',
             }}
-          >
-            LOGO
-          </Typography>
-
+          ></Typography>
+          <img src={logo} style={{ width: '40px' }} alt="logo" />
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -179,13 +195,14 @@ export const NavBar = () => {
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
-              <NavLink to="/"> Notes </NavLink>
+              <NavLink to="/"> Main page </NavLink>
+              <NavLink to="/notes"> Notes </NavLink>
               <NavLink to="/about"> About </NavLink>
               {/* <NavLink to="/paint"> Paint </NavLink> */}
             </Button>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          {/* <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -215,6 +232,19 @@ export const NavBar = () => {
                 </MenuItem>
               ))}
             </Menu>
+          </Box> */}
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="SignOut">
+              {authLocalStorage === null ? (
+                <NavLink to="/login">
+                  <SupervisedUserCircleIcon />
+                </NavLink>
+              ) : (
+                <IconButton onClick={handleSingOut}>
+                  <PersonOffIcon />
+                </IconButton>
+              )}
+            </Tooltip>
           </Box>
           <Search>
             <SearchIconWrapper>

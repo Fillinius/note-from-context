@@ -8,16 +8,17 @@ import Typography from '@mui/material/Typography'
 
 import { NoteProp } from '../../shared/notes/NoteList'
 import { useNote } from '../../shared/context/notes/useNotes'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export const Note = () => {
   const { id } = useParams()
+  console.log(id)
 
   const note = useNote()
   const getNoteById: NoteProp = note.getNoteById(id)
+  const navigate = useNavigate()
 
   if (!getNoteById) return 'Вы еще не выбрали заметку'
-  // if (getNoteById) return 'Выберите заметку'
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -30,7 +31,13 @@ export const Note = () => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => note.removeNote(getNoteById.id)} size="small">
+        <Button
+          onClick={() => {
+            navigate('/notes')
+            return note.removeNote(getNoteById.id)
+          }}
+          size="small"
+        >
           Delete
         </Button>
         {/* <Button size="small">Edit</Button> */}
