@@ -3,25 +3,22 @@ import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import { NavLink } from 'react-router-dom'
 import { useNote } from '../context/notes/useNotes'
-import { useEffect } from 'react'
-import { Login } from '@mui/icons-material'
 
 export type NoteProp = {
   title: string
   id: string
-  date: string
+  date?: string
   discription: string
 }
 
 export const NoteList = () => {
-  const { notes, isLoading, error } = useNote()
-
-  if (!notes) return { error }
+  const { notes, isLoading }: { notes: NoteProp[]; isLoading: boolean } =
+    useNote()
 
   return (
     <>
       <NavLink to="addNote"> Add Note</NavLink>
-
+      {notes.length === 0 && <h5>'Список заметок пуст'</h5>}
       {isLoading && notes.length !== 0 && <p>Loading...</p>}
       <List>
         {notes &&

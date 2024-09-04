@@ -3,13 +3,15 @@ import { TextField } from '../form/TextField'
 import { Box, Button } from '@mui/material'
 import { useNote } from '../context/notes/useNotes'
 import { useNavigate } from 'react-router-dom'
+import { NoteProp } from '../notes/NoteList'
 
-export const AddNote = ({ id }: { id: string }) => {
-  const [data, setData] = useState({ title: '', id, discription: '' })
+const INITIAL_STATE: NoteProp = { title: '', id: '', discription: '' }
+export const AddNote = () => {
+  const [data, setData] = useState(INITIAL_STATE)
   const note: {
     notes: []
     isLoading: boolean
-    createNote: (data: {}) => []
+    createNote: (data: { title: string; id: string; discription: string }) => []
     error: string
   } = useNote()
   const navigate = useNavigate()
@@ -29,7 +31,7 @@ export const AddNote = ({ id }: { id: string }) => {
     e.preventDefault()
     if (note == null) return null
     note.createNote(data)
-    setData({ title: '', id, discription: '' })
+    setData(INITIAL_STATE)
     navigate('/')
   }
 

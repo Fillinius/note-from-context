@@ -7,7 +7,6 @@ import { AddNote } from '../shared/addNote/AddNote'
 import { NoteProvider } from '../shared/context/notes/useNotes'
 
 function App() {
-  const ID = '000'
   return (
     <>
       <NoteProvider>
@@ -15,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NoteLayout />} />
           <Route path="/about" element={<About />} />
-          <Route path="/addNote" element={<AddNote id={ID} />} />
+          <Route path="/addNote" element={<AddNote />} />
         </Routes>
       </NoteProvider>
     </>
