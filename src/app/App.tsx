@@ -11,6 +11,7 @@ import { SeachProvider } from '../shared/context/search/useSearch'
 import { Login } from '../feature/login/Login'
 import { PrivetRoute } from '../shared/context/auth/PrivetRoute'
 import AuthProvider from '../shared/context/auth/AuthProvider'
+import '../../firebase'
 
 function App() {
   return (

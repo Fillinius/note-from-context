@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { NoteProp } from '../../notes/NoteList'
+import { app } from '../../../../firebase'
 
 const NoteContext = createContext({
   notes: [{ id: '', title: '', discription: '', date: '' }],
@@ -15,8 +16,7 @@ export const useNote = () => {
   return useContext(NoteContext)
 }
 
-const baseUrl = import.meta.env.VITE_REACT_APP_FB_URL
-console.log(baseUrl)
+const URL = import.meta.env.VITE_BASE_URL
 
 export const NoteProvider = ({ children }) => {
   const [notes, setNotes] = useState([])
@@ -28,10 +28,7 @@ export const NoteProvider = ({ children }) => {
 
   async function createNote(data: NoteProp) {
     try {
-      const res = await axios.post(
-        'https://note-fa692-default-rtdb.europe-west1.firebasedatabase.app/notes.json',
-        data
-      )
+      const res = await axios.post(`${URL}/notes.json`, data)
       const content = {
         ...data,
         id: res.data.name,
@@ -46,9 +43,7 @@ export const NoteProvider = ({ children }) => {
 
   async function removeNote(id: string) {
     try {
-      await axios.delete(
-        `https://note-fa692-default-rtdb.europe-west1.firebasedatabase.app/notes/${id}.json`
-      )
+      await axios.delete(`${URL}/${id}.json`)
       setLoading(false)
     } catch (error) {
       console.log(error.message)
@@ -56,9 +51,7 @@ export const NoteProvider = ({ children }) => {
   }
   async function fetchNote() {
     try {
-      const res = await axios.get(
-        'https://note-fa692-default-rtdb.europe-west1.firebasedatabase.app/notes.json'
-      )
+      const res = await axios.get(`${URL}/notes.json`)
       const content = Object.keys(res.data).map((key) => ({
         ...res.data[key],
         id: key,

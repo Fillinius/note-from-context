@@ -12,7 +12,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 export const Note = () => {
   const { id } = useParams()
-  console.log(id)
 
   const note = useNote()
   const getNoteById: NoteProp = note.getNoteById(id)
