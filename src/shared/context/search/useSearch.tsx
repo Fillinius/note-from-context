@@ -1,19 +1,27 @@
-import * as React from 'react'
+import { useState, ChangeEvent } from 'react'
 import { createContext, useContext } from 'react'
+import { ProviderProps } from '../../types/type'
 
-const SeachContext = createContext({
+interface ISearchContext {
+  search: string
+  handleChangeSearch: (event: ChangeEvent<HTMLInputElement>) => void
+}
+const initialSearchContext = {
   search: '',
-  handleChangeSearch: () => EventTarget,
-})
+  handleChangeSearch: () => {},
+}
 
+const SeachContext = createContext<ISearchContext>(initialSearchContext)
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSearch = () => {
   return useContext(SeachContext)
 }
 
-export const SeachProvider = ({ children }) => {
-  const [search, setSearch] = React.useState('')
-  const handleChangeSearch = ({ target }: { target: EventTarget }) => {
-    setSearch(target.value)
+export const SeachProvider = ({ children }: ProviderProps) => {
+  const [search, setSearch] = useState('')
+  const handleChangeSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value)
   }
   return (
     <SeachContext.Provider value={{ search, handleChangeSearch }}>

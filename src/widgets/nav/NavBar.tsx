@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useState, MouseEvent } from 'react'
 import { styled, alpha } from '@mui/material/styles'
 import SearchIcon from '@mui/icons-material/Search'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -12,7 +12,6 @@ import {
   Typography,
   Menu,
   Tooltip,
-  Avatar,
   MenuItem,
   Button,
   List,
@@ -25,10 +24,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useSearch } from '../../shared/context/search/useSearch'
 import logo from '../../assets/pngwing.png'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
-import { AuthProp } from '../../feature/type/type'
 import { KEYUSER } from '../../feature/registration/LoginForm'
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -74,31 +70,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export const NavBar = () => {
   // MUI
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
-  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-  //   null
-  // )
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenNavMenu = (event: MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
-  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorElUser(event.currentTarget)
-  // }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null)
   }
 
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null)
-  // }
-  //MUI
-
   const { search, handleChangeSearch } = useSearch()
   const authLocalStorage = localStorage.getItem(KEYUSER)
   const navigate = useNavigate()
-  const auth: AuthProp | null = useAuth()
+  const auth = useAuth()
 
   const handleSingOut = () => {
     if (auth !== null) {
@@ -202,37 +187,6 @@ export const NavBar = () => {
             </Button>
           </Box>
 
-          {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>
-                    {setting}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="SignOut">
               {authLocalStorage === null ? (

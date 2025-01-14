@@ -10,7 +10,7 @@ import Home from '../shared/home/Home'
 import { SeachProvider } from '../shared/context/search/useSearch'
 import { Login } from '../feature/login/Login'
 import { PrivetRoute } from '../shared/context/auth/PrivetRoute'
-import AuthProvider from '../shared/context/auth/AuthProvider'
+import { AuthProvider } from '../shared/context/auth/AuthProvider'
 import '../../firebase'
 
 function App() {
@@ -20,7 +20,6 @@ function App() {
         <NoteProvider>
           <SeachProvider>
             <NavBar />
-
             <Routes>
               <Route path="/" element={<Home />} />
               <Route

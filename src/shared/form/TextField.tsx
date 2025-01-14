@@ -1,10 +1,13 @@
+import { ChangeEvent } from 'react'
+
 interface Prop {
   name: string
   value: string
-  onChange: () => EventTarget
-  placeholder: string
+  onChange: ({ target }: ChangeEvent<HTMLInputElement>) => void
+  placeholder?: string
   label: string
   type: string
+  id?: string
 }
 
 export const TextField = ({

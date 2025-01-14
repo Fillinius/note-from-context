@@ -1,7 +1,8 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './AuthProvider'
+import { ProviderProps } from '../../types/type'
 
-export const PrivetRoute = ({ children }) => {
+export const PrivetRoute = ({ children }: ProviderProps) => {
   const auth = useAuth()
 
   const location = useLocation()

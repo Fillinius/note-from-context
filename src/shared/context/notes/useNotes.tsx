@@ -1,43 +1,60 @@
 import axios from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { NoteProp } from '../../notes/NoteList'
 import { app } from '../../../../firebase'
+import { INote, ProviderProps } from '../../types/type'
 
-const NoteContext = createContext({
-  notes: [{ id: '', title: '', discription: '', date: '' }],
-  createNote: () => [],
-  removeNote: () => [],
+interface INotesContext {
+  notes: Array<INote>
+  createNote: (data: INote) => void
+  removeNote: (id: string) => void
+  getNoteById: (id: string) => void
+  isLoading: boolean
+}
+const initialNotes: Array<INote> = []
+
+const initialNotesContext: INotesContext = {
+  notes: initialNotes,
+  createNote: () => {},
+  removeNote: () => {},
   getNoteById: () => {},
   isLoading: false,
-})
+}
+export const NotesContext = createContext<INotesContext>(initialNotesContext)
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useNote = () => {
-  return useContext(NoteContext)
+  return useContext(NotesContext)
 }
 
-const URL = import.meta.env.VITE_BASE_URL
+const URL = app.options.databaseURL
 
-export const NoteProvider = ({ children }) => {
-  const [notes, setNotes] = useState([])
+export const NoteProvider = ({ children }: ProviderProps) => {
+  const [notes, setNotes] = useState<Array<INote>>(initialNotes)
   const [isLoading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetchNote()
+    fetchNotes()
   }, [])
 
-  async function createNote(data: NoteProp) {
+  async function createNote(data: INote) {
     try {
-      const res = await axios.post(`${URL}/notes.json`, data)
+      const serverData: INote = {
+        ...data,
+        id: '21',
+        createAt: new Date(),
+      }
+      const res = await axios.post(`${URL}/notes.json`, serverData)
+      console.log(data, 'data')
+
       const content = {
         ...data,
         id: res.data.name,
-        date: new Date().toLocaleTimeString(),
+        createAt: new Date(),
       }
       setLoading(false)
       setNotes((prev) => [...prev, content])
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
   }
 
@@ -46,32 +63,40 @@ export const NoteProvider = ({ children }) => {
       await axios.delete(`${URL}/${id}.json`)
       setLoading(false)
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
   }
-  async function fetchNote() {
+  async function fetchNotes() {
     try {
-      const res = await axios.get(`${URL}/notes.json`)
+      const res = await axios.get(`${URL}/notes.json
+        `)
+
       const content = Object.keys(res.data).map((key) => ({
         ...res.data[key],
         id: key,
       }))
+      console.log('cont', content)
+
       setLoading(false)
       setNotes(content)
     } catch (error) {
-      console.log(error.message)
+      console.log(error)
     }
   }
 
   function getNoteById(id: string) {
     return notes.find((note) => note.id === id)
   }
-
+  const valueNotesContext = {
+    notes,
+    createNote,
+    removeNote,
+    isLoading,
+    getNoteById,
+  }
   return (
-    <NoteContext.Provider
-      value={{ notes, createNote, removeNote, isLoading, getNoteById }}
-    >
+    <NotesContext.Provider value={valueNotesContext}>
       {children}
-    </NoteContext.Provider>
+    </NotesContext.Provider>
   )
 }
