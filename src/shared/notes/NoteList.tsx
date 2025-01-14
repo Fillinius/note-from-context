@@ -28,10 +28,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export const NoteList = () => {
   const { notes, isLoading } = useNote()
-  console.log(notes, isLoading)
 
   const { search } = useSearch()
-  console.log(notes, 'notes')
 
   const searchNote = notes.filter((note) =>
     note.title.toLocaleLowerCase().includes(search.toLocaleLowerCase())

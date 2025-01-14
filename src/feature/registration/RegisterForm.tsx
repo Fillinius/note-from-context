@@ -32,7 +32,6 @@ export function RegistrationForm() {
         navigate('/notes')
       })
     }
-    console.log('SendReg', data)
   }
   return (
     <form onSubmit={handleSubmit}>

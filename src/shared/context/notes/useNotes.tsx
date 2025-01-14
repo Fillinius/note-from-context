@@ -44,7 +44,6 @@ export const NoteProvider = ({ children }: ProviderProps) => {
         createAt: new Date(),
       }
       const res = await axios.post(`${URL}/notes.json`, serverData)
-      console.log(data, 'data')
 
       const content = {
         ...data,
@@ -75,7 +74,6 @@ export const NoteProvider = ({ children }: ProviderProps) => {
         ...res.data[key],
         id: key,
       }))
-      console.log('cont', content)
 
       setLoading(false)
       setNotes(content)

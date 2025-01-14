@@ -32,8 +32,6 @@ export function LoginForm() {
       userLocalStorage.password !== data.password
     )
       return navigate('/')
-
-    console.log('Send server', data)
   }
   return (
     <form onSubmit={handleSubmit}>
