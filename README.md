@@ -1,5 +1,5 @@
 # React + TypeScript + Vite
-Проект на Vite
+Проект на Vite + MaterialUI
 Для запуска npm run dev
 Хранение данных посредством Context
 Защищенная авторизация - хранение user через localstorage
