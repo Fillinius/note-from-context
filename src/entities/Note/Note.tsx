@@ -6,17 +6,14 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 //MUI
 
-import { NoteProp } from '../../shared/notes/NoteList'
-import { useNote } from '../../shared/context/notes/useNotes'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNote } from '../../shared/context/notes/notesProvider'
+import { useParams } from 'react-router-dom'
 
 export const Note = () => {
   const { id } = useParams()
+  const { notes, removeNote } = useNote()
 
-  const note = useNote()
-  const getNoteById: NoteProp = note.getNoteById(id)
-  const navigate = useNavigate()
-
+  const getNoteById = notes.find((note) => note.id === id)
   if (!getNoteById) return 'Вы еще не выбрали заметку'
 
   return (
@@ -30,13 +27,7 @@ export const Note = () => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          onClick={() => {
-            navigate('/notes')
-            return note.removeNote(getNoteById.id)
-          }}
-          size="small"
-        >
+        <Button onClick={() => removeNote(id)} size="small">
           Delete
         </Button>
         {/* <Button size="small">Edit</Button> */}

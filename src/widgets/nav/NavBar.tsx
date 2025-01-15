@@ -21,7 +21,7 @@ import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import PersonOffIcon from '@mui/icons-material/PersonOff'
 // MUI
 import { NavLink, useNavigate } from 'react-router-dom'
-import { useSearch } from '../../shared/context/search/useSearch'
+import { useSearch } from '../../shared/context/search/searchProvider'
 import logo from '../../assets/pngwing.png'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
 import { KEYUSER } from '../../feature/registration/LoginForm'

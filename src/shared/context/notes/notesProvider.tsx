@@ -2,6 +2,8 @@ import axios from 'axios'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { app } from '../../../../firebase'
 import { INote, ProviderProps } from '../../types/type'
+import { getRandomId } from '../../utils/getRandomId'
+import { useNavigate } from 'react-router-dom'
 
 interface INotesContext {
   notes: Array<INote>
@@ -19,6 +21,7 @@ const initialNotesContext: INotesContext = {
   getNoteById: () => {},
   isLoading: false,
 }
+
 export const NotesContext = createContext<INotesContext>(initialNotesContext)
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -31,6 +34,7 @@ const URL = app.options.databaseURL
 export const NoteProvider = ({ children }: ProviderProps) => {
   const [notes, setNotes] = useState<Array<INote>>(initialNotes)
   const [isLoading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchNotes()
@@ -40,7 +44,7 @@ export const NoteProvider = ({ children }: ProviderProps) => {
     try {
       const serverData: INote = {
         ...data,
-        id: '21',
+        id: getRandomId(),
         createAt: new Date(),
       }
       const res = await axios.post(`${URL}/notes.json`, serverData)
@@ -50,6 +54,7 @@ export const NoteProvider = ({ children }: ProviderProps) => {
         id: res.data.name,
         createAt: new Date(),
       }
+      navigate(`/notes/${content.id}`)
       setLoading(false)
       setNotes((prev) => [...prev, content])
     } catch (error) {
@@ -59,14 +64,16 @@ export const NoteProvider = ({ children }: ProviderProps) => {
 
   async function removeNote(id: string) {
     try {
-      await axios.delete(`${URL}/${id}.json`)
+      await axios.delete(`${URL}/notes/${id}.json`)
       setLoading(false)
+      navigate('/notes')
     } catch (error) {
       console.log(error)
     }
   }
   async function fetchNotes() {
     try {
+      setLoading(true)
       const res = await axios.get(`${URL}/notes.json
         `)
 

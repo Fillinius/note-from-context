@@ -10,8 +10,8 @@ import { Outlet } from 'react-router-dom'
 //MUI
 
 import { NavLink } from 'react-router-dom'
-import { useNote } from '../../shared/context/notes/useNotes'
-import { useSearch } from '../context/search/useSearch'
+import { useNote } from '../context/notes/notesProvider'
+import { useSearch } from '../context/search/searchProvider'
 
 //MUI
 const Item = styled(Paper)(({ theme }) => ({
