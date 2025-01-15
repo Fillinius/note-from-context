@@ -8,12 +8,16 @@ import Typography from '@mui/material/Typography'
 
 import { useNote } from '../../shared/context/notes/notesProvider'
 import { useParams } from 'react-router-dom'
+import BasicModal from '../../feature/modal/Modal'
+import React from 'react'
 
 export const Note = () => {
   const { id } = useParams()
-  const { notes, removeNote } = useNote()
-
+  const { notes } = useNote()
   const getNoteById = notes.find((note) => note.id === id)
+  const [open, setOpen] = React.useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
   if (!getNoteById) return 'Вы еще не выбрали заметку'
   if (!id) return 'Вы еще не выбрали заметку'
 
@@ -28,10 +32,11 @@ export const Note = () => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => removeNote(id)} size="small">
+        <Button onClick={handleOpen} size="small">
           Delete
         </Button>
-        {/* <Button size="small">Edit</Button> */}
+        <BasicModal open={open} handleClose={handleClose} />
+        <Button size="small">Edit</Button>
       </CardActions>
     </Card>
   )
