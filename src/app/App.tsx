@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import { NavBar } from '../widgets/nav/NavBar'
 import { About } from '../shared/about/About'
-import { AddNote } from '../shared/addNote/AddNote'
+import { AddNote } from '../entities/Note/AddNote'
 import { NoteProvider } from '../shared/context/notes/notesProvider'
 import { Note } from '../entities/Note/Note'
 import { NoteList } from '../shared/notes/NoteList'
@@ -30,7 +30,7 @@ function App() {
                   </PrivetRoute>
                 }
               >
-                <Route path="/notes/:id" element={<Note />} />
+                <Route path="/notes/:id?/:edit?" element={<Note />} />
               </Route>
               <Route path="/addNote" element={<AddNote />} />
               <Route path="/about" element={<About />} />

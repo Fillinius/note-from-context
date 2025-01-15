@@ -10,9 +10,10 @@ import { useNote } from '../../shared/context/notes/notesProvider'
 import { useParams } from 'react-router-dom'
 import BasicModal from '../../feature/modal/Modal'
 import React from 'react'
+import { EditNote } from './EditNote'
 
 export const Note = () => {
-  const { id } = useParams()
+  const { id, edit } = useParams()
   const { notes } = useNote()
   const getNoteById = notes.find((note) => note.id === id)
   const [open, setOpen] = React.useState(false)
@@ -22,22 +23,27 @@ export const Note = () => {
   if (!id) return 'Вы еще не выбрали заметку'
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardContent>
-        <Typography gutterBottom variant="h4" component="div">
-          {getNoteById.title}
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {getNoteById.discription}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button onClick={handleOpen} size="small">
-          Delete
-        </Button>
-        <BasicModal open={open} handleClose={handleClose} />
-        <Button size="small">Edit</Button>
-      </CardActions>
-    </Card>
+    <>
+      {id && (
+        <Card sx={{ maxWidth: 345 }}>
+          <CardContent>
+            <Typography gutterBottom variant="h4" component="div">
+              {getNoteById.title}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {getNoteById.discription}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button onClick={handleOpen} size="small">
+              Delete
+            </Button>
+            <BasicModal open={open} handleClose={handleClose} />
+            <Button size="small">Edit</Button>
+          </CardActions>
+        </Card>
+      )}
+      {edit && <EditNote />}
+    </>
   )
 }

@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react'
-import { TextField } from '../form/TextField'
+import { TextField } from '../../shared/form/TextField'
 import { Box, Button } from '@mui/material'
-import { useNote } from '../context/notes/notesProvider'
+import { useNote } from '../../shared/context/notes/notesProvider'
 import { useNavigate } from 'react-router-dom'
-import { INote } from '../types/type'
+import { INote } from '../../shared/types/type'
 
 const INITIAL_STATE: INote = {
   title: '',
