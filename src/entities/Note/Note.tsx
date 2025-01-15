@@ -15,6 +15,7 @@ export const Note = () => {
 
   const getNoteById = notes.find((note) => note.id === id)
   if (!getNoteById) return 'Вы еще не выбрали заметку'
+  if (!id) return 'Вы еще не выбрали заметку'
 
   return (
     <Card sx={{ maxWidth: 345 }}>
