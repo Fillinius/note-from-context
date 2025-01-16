@@ -7,16 +7,20 @@ import Typography from '@mui/material/Typography'
 //MUI
 
 import { useNote } from '../../shared/context/notes/notesProvider'
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import BasicModal from '../../feature/modal/Modal'
 import React from 'react'
 import { EditNote } from './EditNote'
+import { Link } from 'react-router-dom'
 
 export const Note = () => {
+  const [open, setOpen] = React.useState(false)
   const { id, edit } = useParams()
+  const { pathname } = useLocation()
+
   const { notes } = useNote()
   const getNoteById = notes.find((note) => note.id === id)
-  const [open, setOpen] = React.useState(false)
+
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   if (!getNoteById) return 'Вы еще не выбрали заметку'
@@ -39,7 +43,7 @@ export const Note = () => {
               Delete
             </Button>
             <BasicModal open={open} handleClose={handleClose} />
-            <Button size="small">Edit</Button>
+            <Link to={`${pathname}/edit`}>Edit</Link>
           </CardActions>
         </Card>
       )}
