@@ -4,17 +4,18 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { INote } from '../../shared/types/type'
 import { Box, Button } from '@mui/material'
 import { TextField } from '../../shared/form/TextField'
+import { INITIAL_STATE } from './AddNote'
 
 export function EditNote() {
   const { id } = useParams()
 
   const { notes, editNote } = useNote()
   const currentNoteById = notes.find((note) => note.id === id)
-  const [data, setData] = useState<INote>()
+  const [data, setData] = useState<INote>(INITIAL_STATE)
   const [isLoading, setIsloading] = useState<boolean>(true)
 
   useEffect(() => {
-    if (!data && currentNoteById) {
+    if (data.title === '' && currentNoteById) {
       setData(currentNoteById)
     }
   }, [data, currentNoteById])

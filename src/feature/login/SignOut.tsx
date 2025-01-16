@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../feature/context/AuthProvider'
-import { AuthProp } from '../../feature/type/AuthProp'
+import { useAuth } from '../../shared/context/auth/AuthProvider'
 
 const SignOut = () => {
-  const auth: AuthProp | null = useAuth()
+  const auth = useAuth()
   const navigate = useNavigate()
 
   if (auth !== null) {
