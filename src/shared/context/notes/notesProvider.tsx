@@ -10,6 +10,7 @@ interface INotesContext {
   createNote: (data: INote) => void
   removeNote: (id: string) => void
   getNoteById: (id: string) => void
+  editNote: (data: INote, noteId: string) => void
   isLoading: boolean
 }
 const initialNotes: Array<INote> = []
@@ -19,6 +20,7 @@ const initialNotesContext: INotesContext = {
   createNote: () => {},
   removeNote: () => {},
   getNoteById: () => {},
+  editNote: () => {},
   isLoading: false,
 }
 
@@ -61,7 +63,14 @@ export const NoteProvider = ({ children }: ProviderProps) => {
       console.log(error)
     }
   }
-
+  async function editNote(data: INote, noteId: string) {
+    try {
+      const res = await axios.patch(`${URL}/notes/${noteId}.json`, data)
+      console.log('res', res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   async function removeNote(id: string) {
     try {
       await axios.delete(`${URL}/notes/${id}.json`)
@@ -71,6 +80,7 @@ export const NoteProvider = ({ children }: ProviderProps) => {
       console.log(error)
     }
   }
+
   async function fetchNotes() {
     try {
       setLoading(true)
@@ -98,6 +108,7 @@ export const NoteProvider = ({ children }: ProviderProps) => {
     removeNote,
     isLoading,
     getNoteById,
+    editNote,
   }
   return (
     <NotesContext.Provider value={valueNotesContext}>

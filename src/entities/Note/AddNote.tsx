@@ -5,7 +5,7 @@ import { useNote } from '../../shared/context/notes/notesProvider'
 import { useNavigate } from 'react-router-dom'
 import { INote } from '../../shared/types/type'
 
-const INITIAL_STATE: INote = {
+export const INITIAL_STATE: INote = {
   title: '',
   discription: '',
 }
