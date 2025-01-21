@@ -1,10 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { Button } from '@mui/material'
 
-import { useNavigate } from 'react-router-dom'
 import { TextField } from '../../shared/form/TextField'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
-import { RegistrationFormDataProp } from '../type/type'
+import { RegistrationFormDataProp } from '../../shared/types/type'
 
 export function RegistrationForm() {
   const [data, setData] = useState<RegistrationFormDataProp>({
@@ -12,9 +11,7 @@ export function RegistrationForm() {
     email: '',
     password: '',
   })
-
-  const navigate = useNavigate()
-  const auth = useAuth()
+  const { signUp } = useAuth()
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setData((prev) => ({
@@ -25,13 +22,7 @@ export function RegistrationForm() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (auth === null) {
-      navigate('/signIn')
-    } else {
-      auth.signIn(JSON.stringify(data), () => {
-        navigate('/notes')
-      })
-    }
+    signUp(data)
   }
   return (
     <form onSubmit={handleSubmit}>

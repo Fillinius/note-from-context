@@ -7,8 +7,14 @@ export const PrivetRoute = ({ children }: ProviderProps) => {
   const location = useLocation()
 
   if (auth === null) return
-  if (auth.user === null) {
-    return <Navigate to="/signIn" state={{ from: location.pathname }} replace />
+  if (auth.currentUser === null) {
+    return (
+      <Navigate
+        to="/login/register"
+        state={{ from: location.pathname }}
+        replace
+      />
+    )
   }
   return children
 }

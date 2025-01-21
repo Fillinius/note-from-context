@@ -34,7 +34,7 @@ function App() {
               </Route>
               <Route path="/addNote" element={<AddNote />} />
               <Route path="/about" element={<About />} />
-              <Route path="/signIn/:idUser?/:type?" element={<Login />} />
+              <Route path="/login/:idUser?/:type?" element={<Login />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </SeachProvider>

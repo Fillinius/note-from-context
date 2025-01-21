@@ -7,7 +7,7 @@ const SignOut = () => {
 
   if (auth !== null) {
     return auth.signOut(() => {
-      navigate('/signIn')
+      navigate('/login')
     })
   }
 

@@ -24,7 +24,6 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useSearch } from '../../shared/context/search/searchProvider'
 import logo from '../../assets/pngwing.png'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
-import { KEYUSER } from '../../feature/registration/LoginForm'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -81,15 +80,14 @@ export const NavBar = () => {
   }
 
   const { search, handleChangeSearch } = useSearch()
-  const authLocalStorage = localStorage.getItem(KEYUSER)
-  const navigate = useNavigate()
-  const auth = useAuth()
+  // const navigate = useNavigate()
+  const { currentUser, signOut } = useAuth()
+  console.log(currentUser)
 
-  const handleSingOut = () => {
-    if (auth !== null) {
-      auth.signOut(() => {
-        navigate('/signIn')
-      })
+  const handleSign = () => {
+    if (currentUser !== undefined) {
+      signOut()
+      console.log('out')
     }
     return null
   }
@@ -188,13 +186,13 @@ export const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="SignOut">
-              {authLocalStorage === null ? (
+            <Tooltip title="Sign">
+              {currentUser === null ? (
                 <NavLink to="/login">
                   <SupervisedUserCircleIcon />
                 </NavLink>
               ) : (
-                <IconButton onClick={handleSingOut}>
+                <IconButton onClick={handleSign}>
                   <PersonOffIcon />
                 </IconButton>
               )}

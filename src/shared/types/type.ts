@@ -9,6 +9,11 @@ export interface ProviderProps {
   children: React.ReactNode
 }
 
-export type TUser = NonEmptyString<string>
+export type TUser = NewUserProp | never | undefined
 
-type NonEmptyString<T extends string> = T extends '' ? never : T //user can't be empty
+export interface NewUserProp {
+  name?: string | null
+  email: string | null
+  password?: string | null
+  id?: string | null
+}

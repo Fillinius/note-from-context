@@ -1,37 +1,27 @@
 import { useState, ChangeEvent } from 'react'
 import { Button } from '@mui/material'
 import { TextField } from '../../shared/form/TextField'
-import { useNavigate } from 'react-router-dom'
 
-interface userLocalStorageProp {
-  [key: string]: string | null
-}
+import { useAuth } from '../../shared/context/auth/AuthProvider'
+import { NewUserProp } from '../../shared/types/type'
 
 const INITIALSTATELOGIN = { email: '', password: '' }
-export const KEYUSER = 'user'
 
 export function LoginForm() {
-  const [data, setData] = useState(INITIALSTATELOGIN)
-  const navigate = useNavigate()
+  const [data, setData] = useState<NewUserProp>(INITIALSTATELOGIN)
+
+  const { signIn } = useAuth()
+
+  if (!data) return 'Data is empty'
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setData((prev) => ({
       ...prev,
       [target.name]: target.value,
     }))
   }
-
-  const userLocalStorage: userLocalStorageProp | null = JSON.parse(
-    localStorage.getItem(KEYUSER) || 'null'
-  )
-
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    if (
-      userLocalStorage !== null &&
-      userLocalStorage.email !== data.email &&
-      userLocalStorage.password !== data.password
-    )
-      return navigate('/')
+    signIn(data)
   }
   return (
     <form onSubmit={handleSubmit}>

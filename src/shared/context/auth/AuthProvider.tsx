@@ -1,16 +1,19 @@
 import { createContext, useContext, useState } from 'react'
-
-import { KEYUSER } from '../../../feature/registration/LoginForm'
 import { ProviderProps, TUser } from '../../types/type'
-export interface NewUserProp {
-  name: string
-  email: string
-  password: string
-}
+import { auth } from '../../../../firebase'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth'
+import { useNavigate } from 'react-router'
+
 interface IAuthContext {
-  user: TUser | null
+  currentUser: TUser | null
+  signUp: (data: TUser) => void
   signIn: (data: TUser, callback: () => void) => void
   signOut: (callback: () => void) => void
+  error: string | null
+  isLoading: boolean
 }
 const AuthContext = createContext<IAuthContext | null>(null)
 
@@ -20,24 +23,64 @@ export function useAuth() {
 }
 
 export const AuthProvider = ({ children }: ProviderProps) => {
-  const [user, setUser] = useState(() => localStorage.getItem(KEYUSER) || null)
+  // Блок регистрации посредством firebase
+  const [currentUser, setCurrentUser] = useState<TUser | null>(null)
+  const [error, setError] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+  const navigate = useNavigate()
 
-  const signIn = (newUser: TUser, callback: () => void) => {
-    setUser(newUser)
-    localStorage.setItem(KEYUSER, newUser)
-    callback()
+  // функция регистрации
+  async function signUp(data: TUser | null) {
+    if (!data) return 'Err'
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(({ user }) => {
+        // Signed up
+        setCurrentUser({
+          email: user.email,
+          id: user.uid,
+        })
+        setError(null)
+        setLoading(false)
+        navigate('/notes')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        console.log(errorCode)
+        console.log(errorMessage)
+      })
   }
 
-  const signOut = (callback: () => void) => {
-    console.log('singOut')
-
-    setUser(null)
-    localStorage.removeItem(KEYUSER)
-    callback()
+  async function signIn(data: TUser) {
+    if (!data) return 'Err'
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then(({ user }) => {
+        setCurrentUser({
+          email: user.email,
+          id: user.uid,
+        })
+        setError(null)
+        setLoading(false)
+        navigate('/notes')
+      })
+      .catch((error) => {
+        const errorCode = error.code
+        const errorMessage = error.message
+        setError(errorCode)
+        console.log(errorMessage)
+      })
+  }
+  function signOut() {
+    setCurrentUser(null)
+    setError(null)
+    setLoading(false)
+    navigate('/login')
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ currentUser, signIn, signUp, signOut, error, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   )
