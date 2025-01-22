@@ -1,7 +1,6 @@
 import { useState, ChangeEvent } from 'react'
 import { Button } from '@mui/material'
 import { TextField } from '../../shared/form/TextField'
-
 import { useAuth } from '../../shared/context/auth/AuthProvider'
 import { NewUserProp } from '../../shared/types/type'
 
@@ -24,7 +23,7 @@ export function LoginForm() {
     signIn(data)
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="loginFormText" onSubmit={handleSubmit}>
       <TextField
         label="Введите Ваше email"
         name="email"

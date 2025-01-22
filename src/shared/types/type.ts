@@ -12,8 +12,8 @@ export interface ProviderProps {
 export type TUser = NewUserProp | never | undefined
 
 export interface NewUserProp {
-  name?: string | null
-  email: string | null
-  password?: string | null
-  id?: string | null
+  name?: string
+  email: string | undefined | null
+  password?: string
+  id?: string
 }

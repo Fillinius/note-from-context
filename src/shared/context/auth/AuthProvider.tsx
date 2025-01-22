@@ -10,12 +10,20 @@ import { useNavigate } from 'react-router'
 interface IAuthContext {
   currentUser: TUser | null
   signUp: (data: TUser) => void
-  signIn: (data: TUser, callback: () => void) => void
-  signOut: (callback: () => void) => void
+  signIn: (data: TUser) => void
+  signOut: () => void
   error: string | null
   isLoading: boolean
 }
-const AuthContext = createContext<IAuthContext | null>(null)
+const initialAuthContext: IAuthContext = {
+  currentUser: { email: '' },
+  signUp: () => {},
+  signIn: () => {},
+  signOut: () => {},
+  error: '',
+  isLoading: false,
+}
+const AuthContext = createContext<IAuthContext>(initialAuthContext)
 
 // eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
@@ -30,8 +38,8 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   const navigate = useNavigate()
 
   // функция регистрации
-  async function signUp(data: TUser | null) {
-    if (!data) return 'Err'
+  async function signUp(data: TUser) {
+    if (!data || !data.email || !data.password) return 'Err'
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(({ user }) => {
         // Signed up
@@ -52,7 +60,7 @@ export const AuthProvider = ({ children }: ProviderProps) => {
   }
 
   async function signIn(data: TUser) {
-    if (!data) return 'Err'
+    if (!data || !data.email || !data.password) return 'Err'
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then(({ user }) => {
         setCurrentUser({

@@ -20,7 +20,7 @@ import {
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle'
 import PersonOffIcon from '@mui/icons-material/PersonOff'
 // MUI
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useSearch } from '../../shared/context/search/searchProvider'
 import logo from '../../assets/pngwing.png'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
@@ -186,7 +186,7 @@ export const NavBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Sign">
+            <Tooltip title="Login">
               {currentUser === null ? (
                 <NavLink to="/login">
                   <SupervisedUserCircleIcon />

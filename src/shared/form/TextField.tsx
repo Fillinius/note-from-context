@@ -20,14 +20,16 @@ export const TextField = ({
 }: Prop) => {
   return (
     <>
-      <label htmlFor={name}>{label}</label>
-      <input
-        type={type}
-        value={value}
-        name={name}
-        onChange={onChange}
-        placeholder={placeholder}
-      />
+      <label htmlFor={name}>
+        {label}
+        <input
+          type={type}
+          value={value}
+          name={name}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
+      </label>
     </>
   )
 }

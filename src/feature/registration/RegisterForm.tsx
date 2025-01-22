@@ -3,10 +3,10 @@ import { Button } from '@mui/material'
 
 import { TextField } from '../../shared/form/TextField'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
-import { RegistrationFormDataProp } from '../../shared/types/type'
+import { NewUserProp } from '../../shared/types/type'
 
 export function RegistrationForm() {
-  const [data, setData] = useState<RegistrationFormDataProp>({
+  const [data, setData] = useState<NewUserProp>({
     name: '',
     email: '',
     password: '',
@@ -25,7 +25,7 @@ export function RegistrationForm() {
     signUp(data)
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="loginFormText" onSubmit={handleSubmit}>
       <TextField
         label="Введите Ваше имя "
         name="name"
