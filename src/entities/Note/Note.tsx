@@ -6,41 +6,48 @@ import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 //MUI
 
-import { NoteProp } from '../../shared/notes/NoteList'
-import { useNote } from '../../shared/context/notes/useNotes'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNote } from '../../shared/context/notes/notesProvider'
+import { useLocation, useParams } from 'react-router-dom'
+import BasicModal from '../../feature/modal/Modal'
+import React from 'react'
+import { EditNote } from './EditNote'
+import { Link } from 'react-router-dom'
 
 export const Note = () => {
-  const { id } = useParams()
+  const [open, setOpen] = React.useState(false)
+  const { id, edit } = useParams()
+  const { pathname } = useLocation()
 
-  const note = useNote()
-  const getNoteById: NoteProp = note.getNoteById(id)
-  const navigate = useNavigate()
+  const { notes } = useNote()
+  const getNoteById = notes.find((note) => note.id === id)
 
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
   if (!getNoteById) return 'Вы еще не выбрали заметку'
+  if (!id) return 'Вы еще не выбрали заметку'
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardContent>
-        <Typography gutterBottom variant="h4" component="div">
-          {getNoteById.title}
-        </Typography>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {getNoteById.discription}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button
-          onClick={() => {
-            navigate('/notes')
-            return note.removeNote(getNoteById.id)
-          }}
-          size="small"
-        >
-          Delete
-        </Button>
-        {/* <Button size="small">Edit</Button> */}
-      </CardActions>
-    </Card>
+    <>
+      {id && (
+        <Card sx={{ maxWidth: 345 }}>
+          <CardContent>
+            <Typography gutterBottom variant="h4" component="div">
+              {getNoteById.title}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              {getNoteById.discription}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button onClick={handleOpen} size="small">
+              Delete
+            </Button>
+            <BasicModal open={open} handleClose={handleClose} />
+            <Link to={`${pathname}/edit`}>Edit</Link>
+          </CardActions>
+        </Card>
+      )}
+      {edit && <EditNote />}
+    </>
   )
 }

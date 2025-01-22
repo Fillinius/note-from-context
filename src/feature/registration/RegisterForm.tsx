@@ -1,20 +1,17 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Button } from '@mui/material'
 
-import { useNavigate } from 'react-router-dom'
 import { TextField } from '../../shared/form/TextField'
 import { useAuth } from '../../shared/context/auth/AuthProvider'
-import { AuthProp, RegistrationFormDataProp } from '../type/type'
+import { NewUserProp } from '../../shared/types/type'
 
 export function RegistrationForm() {
-  const [data, setData] = useState<RegistrationFormDataProp>({
+  const [data, setData] = useState<NewUserProp>({
     name: '',
     email: '',
     password: '',
   })
-
-  const navigate = useNavigate()
-  const auth: null | AuthProp = useAuth()
+  const { signUp } = useAuth()
 
   const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     setData((prev) => ({
@@ -23,19 +20,12 @@ export function RegistrationForm() {
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (auth === null) {
-      navigate('/signIn')
-    } else {
-      auth.signIn(JSON.stringify(data), () => {
-        navigate('/notes')
-      })
-    }
-    console.log('SendReg', data)
+    signUp(data)
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="loginFormText" onSubmit={handleSubmit}>
       <TextField
         label="Введите Ваше имя "
         name="name"

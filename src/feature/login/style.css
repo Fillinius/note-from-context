@@ -3,7 +3,11 @@
 }
 .loginForm {
   max-width: 300px;
-  margin: 0 auto;
+  margin: 0.5em auto;
   border: solid 1px grey;
   padding: 0.5em 0.5em;
+}
+.loginFormText {
+  display: flex;
+  flex-direction: column;
 }
