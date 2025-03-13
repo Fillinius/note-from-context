@@ -1,16 +1,16 @@
 import { Route, Routes } from 'react-router-dom'
 import { NavBar } from '../widgets/nav/NavBar'
 import { About } from '../shared/about/About'
-import { AddNote } from '../shared/addNote/AddNote'
-import { NoteProvider } from '../shared/context/notes/useNotes'
+import { AddNote } from '../entities/Note/AddNote'
+import { NoteProvider } from '../shared/context/notes/notesProvider'
 import { Note } from '../entities/Note/Note'
 import { NoteList } from '../shared/notes/NoteList'
 import NotFound from '../shared/404/NotFound'
 import Home from '../shared/home/Home'
-import { SeachProvider } from '../shared/context/search/useSearch'
+import { SeachProvider } from '../shared/context/search/searchProvider'
 import { Login } from '../feature/login/Login'
 import { PrivetRoute } from '../shared/context/auth/PrivetRoute'
-import AuthProvider from '../shared/context/auth/AuthProvider'
+import { AuthProvider } from '../shared/context/auth/AuthProvider'
 import '../../firebase'
 
 function App() {
@@ -20,7 +20,6 @@ function App() {
         <NoteProvider>
           <SeachProvider>
             <NavBar />
-
             <Routes>
               <Route path="/" element={<Home />} />
               <Route
@@ -31,11 +30,11 @@ function App() {
                   </PrivetRoute>
                 }
               >
-                <Route path="/notes/:id" element={<Note />} />
+                <Route path="/notes/:id?/:edit?" element={<Note />} />
               </Route>
               <Route path="/addNote" element={<AddNote />} />
               <Route path="/about" element={<About />} />
-              <Route path="/signIn/:idUser?/:type?" element={<Login />} />
+              <Route path="/login/:idUser?/:type?" element={<Login />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </SeachProvider>

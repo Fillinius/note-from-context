@@ -1,10 +1,13 @@
+import { ChangeEvent } from 'react'
+
 interface Prop {
   name: string
   value: string
-  onChange: () => EventTarget
-  placeholder: string
+  onChange: ({ target }: ChangeEvent<HTMLInputElement>) => void
+  placeholder?: string
   label: string
   type: string
+  id?: string
 }
 
 export const TextField = ({
@@ -17,14 +20,16 @@ export const TextField = ({
 }: Prop) => {
   return (
     <>
-      <label htmlFor={name}>{label}</label>
-      <input
-        type={type}
-        value={value}
-        name={name}
-        onChange={onChange}
-        placeholder={placeholder}
-      />
+      <label htmlFor={name}>
+        {label}
+        <input
+          type={type}
+          value={value}
+          name={name}
+          onChange={onChange}
+          placeholder={placeholder}
+        />
+      </label>
     </>
   )
 }

@@ -10,8 +10,8 @@ import { Outlet } from 'react-router-dom'
 //MUI
 
 import { NavLink } from 'react-router-dom'
-import { useNote } from '../../shared/context/notes/useNotes'
-import { useSearch } from '../context/search/useSearch'
+import { useNote } from '../context/notes/notesProvider'
+import { useSearch } from '../context/search/searchProvider'
 
 //MUI
 const Item = styled(Paper)(({ theme }) => ({
@@ -26,15 +26,9 @@ const Item = styled(Paper)(({ theme }) => ({
 }))
 //MUI
 
-export type NoteProp = {
-  title: string
-  id: string
-  date?: string
-  discription: string
-}
-
 export const NoteList = () => {
   const { notes, isLoading } = useNote()
+
   const { search } = useSearch()
 
   const searchNote = notes.filter((note) =>
@@ -49,8 +43,8 @@ export const NoteList = () => {
           <Grid size={4}>
             <Item>
               <NavLink to="/addNote"> Add Note</NavLink>
-              {notes.length === 0 && <h5>'Список заметок пуст'</h5>}
-              {isLoading && notes.length !== 0 && <p>Loading...</p>}
+              {notes.length === 0 && <h5>'Список заметок пуст!'</h5>}
+              {isLoading && <p>Loading...</p>}
               <List>
                 {notes &&
                   !isLoading &&
@@ -62,7 +56,7 @@ export const NoteList = () => {
                             <ListItemText>
                               <h2>{note.title}</h2>
                               <div>
-                                <span>{note.date}</span>
+                                <span>{note.createAt?.toLocaleString()}</span>
                                 <p>{note.discription}</p>
                               </div>
                             </ListItemText>
