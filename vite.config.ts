@@ -30,4 +30,5 @@ export default defineConfig({
       },
     }),
   ],
+  base: '/note-from-context/',
 })
